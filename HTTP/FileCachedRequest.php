@@ -15,6 +15,7 @@ class HTTP_FileCachedRequest extends CachedRequest {
    * Sets the cache name.
    */
   public function set_cache_name($cache_name) {
+    parent::set_cache_name($cache_name);
     $this->cache_path = dirname(__FILE__) . '/cache/' . $cache_name;
     $this->cache_exists = file_exists($this->cache_path);
   }
