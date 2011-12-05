@@ -15,5 +15,9 @@ Example
 If you wish to implement File Caching into your HTTP GET requests, you could simply
 use...
 
+```
+<?php
   $request = new FileCachedRequest('http://mysite.com/rest/resource/1234');
   $result = $request->send()->getBody();
+?>
+```
