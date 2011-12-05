@@ -6,7 +6,7 @@ require_once 'CachedRequest.php';
 /**
  * This class implements a file caching mechanism for all requests.
  */
-class HTTP_FileCachedRequest extends CachedRequest {
+class HTTP_FileCachedRequest extends HTTP_CachedRequest {
 
   protected $cache_path = '';
   protected $cache_exists = FALSE;
