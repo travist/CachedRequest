@@ -12,6 +12,9 @@ class HTTP_CachedRequest extends HTTP_Request2 {
   // The constructor.
   function __construct($url = null, $method = self::METHOD_GET, array $config = array()) {
 
+    // Set default cache timeout to 1hr.
+    $config['cache_timeout'] = isset($config['cache_timeout']) ? $config['cache_timeout'] : 3600;
+
     // Add the configuration for this class to the configuration.
     $this->config = array_merge($this->config, array(
       'cache_name' => $config['cache_name'],
