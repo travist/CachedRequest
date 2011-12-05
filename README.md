@@ -17,7 +17,7 @@ use...
 
 ```
 <?php
-  $request = new FileCachedRequest('http://mysite.com/rest/resource/1234');
+  $request = new HTTP_FileCachedRequest('http://mysite.com/rest/resource/1234');
   $result = $request->send()->getBody();
 ?>
 ```

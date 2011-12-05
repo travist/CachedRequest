@@ -81,7 +81,7 @@ class HTTP_CachedRequest extends HTTP_Request2 {
     }
 
     // Return our cached response.
-    return new CachedResponse($this, $response);
+    return new HTTP_CachedResponse($this, $response);
   }
 }
 ?>

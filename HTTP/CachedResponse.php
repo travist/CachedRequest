@@ -5,7 +5,7 @@
  * with the getBody method, but instead calls into the CachedRequest class
  * to return cache if it exists.
  */
-class CachedResponse {
+class HTTP_CachedResponse {
 
   protected $request = null;
   protected $response = null;
