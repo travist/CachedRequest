@@ -4,21 +4,20 @@ require_once 'CachedResponse.php';
 
 class HTTP_CachedRequest extends HTTP_Request2 {
 
+  // The name of the cache.
+  protected $cache_name = '';
+
   // By default, this simply implements a static cache.  Other classes can
   // derive from this class to implement more persistent caching like File,
-  // API, or MemCache.
+  // APC, or MemCache.
   protected $static_cache = array();
 
   // The constructor.
   function __construct($url = null, $method = self::METHOD_GET, array $config = array()) {
 
-    // Set default cache timeout to 1hr.
-    $config['cache_timeout'] = isset($config['cache_timeout']) ? $config['cache_timeout'] : 3600;
-
-    // Add the configuration for this class to the configuration.
+    // Add the configuration for this class to the configuration. Default the timeout to 1hr.
     $this->config = array_merge($this->config, array(
-      'cache_name' => $config['cache_name'],
-      'cache_timeout' => $config['cache_timeout']
+      'cache_timeout' => isset($config['cache_timeout']) ? $config['cache_timeout'] : 3600
     ));
 
     // Call the parent constructor.
@@ -32,6 +31,7 @@ class HTTP_CachedRequest extends HTTP_Request2 {
    * certain checks are made.
    */
   public function set_cache_name($cache_name) {
+    $this->cache_name = $cache_name;
   }
 
   /**
@@ -47,35 +47,28 @@ class HTTP_CachedRequest extends HTTP_Request2 {
    * @return type
    */
   public function cache_valid() {
-    return isset($this->static_cache[$this->config['cache_name']]);
+    return isset($this->static_cache[$this->cache_name]);
   }
 
   /**
    * Cache the response.
    */
   public function cache_response($body) {
-    $this->static_cache[$this->config['cache_name']] = $body;
+    $this->static_cache[$this->cache_name] = $body;
   }
 
   /**
    * Returns the cache.
    */
   public function get_cache() {
-    return $this->static_cache[$this->config['cache_name']];
+    return $this->static_cache[$this->cache_name];
   }
 
   // Override the send function to only send if the cache exists and is valid.
   public function send() {
 
-    // Make sure we have a cache_name.
-    if (!$this->config['cache_name']) {
-
-      // The cache name can be a HASH of the URL.
-      $this->config['cache_name'] = md5($this->url->getURL());
-    }
-
-    // Set the cache name.
-    $this->set_cache_name($this->config['cache_name']);
+    // Set the cache name to the md5 of the URL.
+    $this->set_cache_name(md5($this->url->getURL()));
 
     // Only send if we shouldn't cache or if the cache is invalid.
     $response = null;
